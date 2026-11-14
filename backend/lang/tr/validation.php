@@ -1,0 +1,48 @@
+<?php
+
+return [
+    'array' => ':attribute bir liste olmalıdır.',
+    'boolean' => ':attribute doğru ya da yanlış olmalıdır.',
+    'confirmed' => ':attribute doğrulaması eşleşmiyor.',
+    'email' => ':attribute geçerli bir e-posta adresi olmalıdır.',
+    'exists' => 'Seçilen :attribute geçersiz.',
+    'image' => ':attribute bir resim dosyası olmalıdır.',
+    'in' => 'Seçilen :attribute geçersiz.',
+    'integer' =>':attribute tam sayı olmalıdır.',
+    'max' => [
+        'array' => ':attribute en fazla :max öğe içerebilir.',
+        'file' => ':attribute en fazla :max kilobayt olabilir.',
+        'numeric' => ':attribute en fazla :max olabilir.',
+        'string' => ':attribute en fazla :max karakter olabilir.',
+    ],
+    'mimes' => ':attribute şu türlerden biri olmalıdır: :values.',
+    'min' => [
+        'array' => ':attribute en az :min öğe içermelidir.',
+        'numeric' => ':attribute en az :min olmalıdır.',
+        'string' => ':attribute en az :min karakter olmalıdır.',
+    ],
+    'numeric' => ':attribute sayı olmalıdır.',
+    'required' => ':attribute alanı zorunludur.',
+    'string' => ':attribute metin olmalıdır.',
+    'unique' => ':attribute zaten kullanılıyor.',
+    'uploaded' => ':attribute yüklenemedi. Dosya çok büyük olabilir.',
+
+    'attributes' => [
+        'name' => 'Ad',
+        'email' => 'E-posta',
+        'password' => 'Şifre',
+        'restaurant_name' => 'Restoran adı',
+        'description' => 'Açıklama',
+        'price' => 'Fiyat',
+        'image' => 'Görsel',
+        'category_id' => 'Kategori',
+        'ids' => 'Sıralama',
+        'ids.*' => 'Sıralama',
+        'uncertain' => 'Belirsiz',
+        'images' => 'Fotoğraflar',
+        'images.*' => 'Fotoğraf',
+        'logo' => 'Logo',
+        'theme' => 'Tema',
+        'menu' => 'Menü',
+    ],
+];

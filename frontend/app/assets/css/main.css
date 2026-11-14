@@ -1,0 +1,289 @@
+@import "tailwindcss";
+
+/*
+ * Hızlı Menüm owner app: "adisyon and three pens".
+ * Blue ballpoint = owner actions, yellow highlighter = uncertain, red pen = errors.
+ * Light only. The default Tailwind palette is switched off on purpose.
+ */
+@theme {
+  --color-*: initial;
+
+  /* paper */
+  --color-paper: #FFFFFF;
+  --color-carbon: #F2F4FA;
+
+  /* pencil */
+  --color-graphite: #26292E;
+  --color-graphite-2: #5F6670;
+  --color-line-strong: #7D8696;
+  --color-rule: #C7D0EC;
+
+  /* blue ballpoint */
+  --color-ink: #1D3AB0;
+  --color-ink-press: #152A85;
+  --color-ink-wash: #E7EBFA;
+
+  /* highlighter */
+  --color-marker: #FFE14D;
+  --color-marker-edge: #C9A400;
+
+  /* red pen */
+  --color-redpen: #C4231B;
+  --color-redpen-wash: #FCECEA;
+
+  /* type: one family, two widths */
+  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
+
+  --text-display: 2.5rem;
+  --text-display--line-height: 2.625rem;
+  --text-display--font-weight: 800;
+  --text-h1: 1.875rem;
+  --text-h1--line-height: 2.125rem;
+  --text-h1--font-weight: 750;
+  --text-h2: 1.375rem;
+  --text-h2--line-height: 1.625rem;
+  --text-h2--font-weight: 700;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5rem;
+  --text-item: 1.0625rem;
+  --text-item--line-height: 1.5rem;
+  --text-item--font-weight: 550;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.25rem;
+  --text-label: 0.875rem;
+  --text-label--line-height: 1.25rem;
+  --text-label--font-weight: 600;
+  --text-button: 1rem;
+  --text-button--line-height: 1.25rem;
+  --text-button--font-weight: 650;
+  --text-wordmark: 1.25rem;
+  --text-wordmark--line-height: 1.5rem;
+  --text-wordmark--font-weight: 800;
+
+  /* radii by hierarchy */
+  --radius-sheet: 4px;
+  --radius-control: 8px;
+  --radius-mark: 2px;
+
+  --shadow-pop: 0 6px 20px -8px rgba(38, 41, 46, .35);
+}
+
+/* Condensed width from shop-sign lettering: headings and the wordmark. */
+@utility font-condensed {
+  font-stretch: 72%;
+  letter-spacing: -0.005em;
+}
+
+/* Running text never exceeds ~65 characters. */
+@utility measure {
+  max-width: 34rem;
+}
+
+/*
+ * The highlighter stroke for uncertain item names. Inline element; follows line wraps.
+ * The ink is a registered colour so that clearing it (marker-off) fades instead of snapping.
+ */
+@property --marker-ink {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #FFE14D;
+}
+
+@utility marker {
+  background-image: linear-gradient(transparent 12%, var(--marker-ink) 12%, var(--marker-ink) 88%, transparent 88%);
+  transition: --marker-ink 200ms ease-out;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding-inline: .15em;
+  border-radius: var(--radius-mark);
+}
+
+/* Same box as `marker`, no ink: keeps names aligned whether or not they are highlighted. */
+@utility marker-off {
+  --marker-ink: transparent;
+}
+
+/* "Kontrol et": the text half of the uncertain state, so it is never colour-only. */
+@utility tag-check {
+  display: inline-block;
+  padding-inline: 0.375rem;
+  border-radius: var(--radius-mark);
+  background: var(--color-marker);
+  color: var(--color-graphite);
+  font-size: var(--text-small);
+  line-height: var(--text-small--line-height);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@utility marker-draw {
+  animation: marker-draw 280ms ease-out both;
+}
+
+@keyframes marker-draw {
+  from { background-size: 0% 100%; }
+  to { background-size: 100% 100%; }
+}
+
+/* Rows that arrive from a photo read appear in order (delay set inline), opacity only. */
+@utility row-in {
+  animation: row-in 150ms linear both;
+}
+
+@keyframes row-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* While a read runs: a short ballpoint dash that slowly breathes. Static with reduced motion. */
+@utility reading-pen {
+  width: 0.75rem;
+  height: 0.1875rem;
+  border-radius: var(--radius-mark);
+  background: var(--color-ink);
+  animation: reading-pen 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes reading-pen {
+  from { opacity: 1; }
+  to { opacity: 0.25; }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    background: var(--color-paper);
+    color: var(--color-graphite);
+    font-family: var(--font-sans);
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-weight: 400;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-ink-wash);
+  }
+}
+
+/* Shared controls. In the components layer so page utilities can still override them. */
+@layer components {
+  .input {
+    display: block;
+    width: 100%;
+    height: 3rem;
+    padding-inline: 0.75rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-control);
+    background: var(--color-paper);
+    color: var(--color-graphite);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+  }
+  .input:focus {
+    border-color: var(--color-ink);
+  }
+  .input[aria-invalid="true"] {
+    border-color: var(--color-redpen);
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: var(--text-label--font-weight);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    padding-inline: 1.25rem;
+    border-radius: var(--radius-control);
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-size: var(--text-button);
+    line-height: var(--text-button--line-height);
+    font-weight: var(--text-button--font-weight);
+    cursor: pointer;
+  }
+  .btn-primary:hover,
+  .btn-primary:active {
+    background: var(--color-ink-press);
+  }
+  .btn-primary:disabled {
+    background: var(--color-carbon);
+    color: var(--color-graphite-2);
+    cursor: default;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    padding-inline: 1.25rem;
+    border: 1.5px solid var(--color-ink);
+    border-radius: var(--radius-control);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-size: var(--text-button);
+    line-height: var(--text-button--line-height);
+    font-weight: var(--text-button--font-weight);
+    cursor: pointer;
+  }
+  .btn-secondary:hover,
+  .btn-secondary:active {
+    border-color: var(--color-ink-press);
+    background: var(--color-ink-wash);
+    color: var(--color-ink-press);
+  }
+  .btn-secondary:disabled {
+    border-color: var(--color-line-strong);
+    background: var(--color-carbon);
+    color: var(--color-graphite-2);
+    cursor: default;
+  }
+
+  .btn-text {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--color-ink);
+    font-weight: 600;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+  .btn-text:hover {
+    text-decoration-line: underline;
+  }
+  .btn-text:disabled {
+    color: var(--color-graphite-2);
+    text-decoration-line: none;
+    cursor: default;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+  }
+}
